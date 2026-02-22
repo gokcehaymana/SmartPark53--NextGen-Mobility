@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Çıkış sonucu{% endblock %}
+{% block content %}
+<section class="welcome-strip">
+    <p class="welcome-text">Çıkış kaydedildi</p>
+    <p class="welcome-sub">Plaka: <strong>{{ plaka }}</strong></p>
+</section>
+<div class="card card-offset-left">
+    <div class="result-rows">
+        <div class="result-row"><span>Giriş</span><strong>{{ kayit.giris[:19] if kayit.giris else '-' }}</strong></div>
+        <div class="result-row"><span>Çıkış</span><strong>{{ kayit.cikis[:19] if kayit.cikis else '-' }}</strong></div>
+        <div class="result-row"><span>Ödenen (TL)</span><strong>{{ "%.2f"|format(kayit.get('odenen_tutar', 0)) }}</strong></div>
+        <div class="result-row highlight"><span>Borç (TL)</span><strong>{{ "%.2f"|format(kayit.get('borc', 0)) }}</strong></div>
+    </div>
+    <div class="cikis-actions">
+        <a href="{{ url_for('odeme') }}?plaka={{ plaka }}" class="btn">Ödeme yap</a>
+        <a href="{{ url_for('cikis') }}" class="btn btn-secondary btn-inline">Yeni çıkış</a>
+    </div>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.welcome-strip { background: linear-gradient(135deg, rgba(5, 107, 82, 0.08), rgba(6, 90, 114, 0.08)); border-radius: var(--radius); padding: 1.75rem 1.5rem; margin-bottom: 1.5rem; border: 2px solid rgba(5, 107, 82, 0.12); }
+.welcome-text { font-size: 1.5rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.35rem; }
+.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+.result-rows { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--surface-soft); border-radius: var(--radius-sm); }
+.result-row span { color: var(--text-muted); }
+.result-row.highlight { background: rgba(5, 107, 82, 0.1); border: 2px solid rgba(5, 107, 82, 0.2); }
+.result-row.highlight strong { color: var(--rize-green-dark); }
+.cikis-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.cikis-actions .btn { flex: 1; min-width: 140px; }
+.cikis-actions .btn-inline { width: auto; }
+</style>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Plaka Kayıt{% endblock %}
+{% block content %}
+<section class="welcome-strip">
+    <p class="welcome-text">Plaka kayıt</p>
+    <p class="welcome-sub">Aracınızın plakasını ve park alanını seçin. Giriş saatiniz otomatik kaydedilir.</p>
+</section>
+<div class="card card-offset-right">
+    <h3>Bilgileri girin</h3>
+    <form method="post" action="{{ url_for('plaka') }}" class="form-stack">
+        <label for="plaka">Plaka</label>
+        <input type="text" id="plaka" name="plaka" placeholder="34 ABC 123" required autocomplete="off" maxlength="20">
+        <label for="alan_id">Park alanı</label>
+        <select id="alan_id" name="alan_id">
+            {% for pid, p in park_alanlari.items() %}
+            <option value="{{ pid }}">{{ p.get('ilce', '') }} — {{ p.ad }} — {{ p.adres }}</option>
+            {% endfor %}
+            {% if not park_alanlari %}<option value="">— Otopark yok —</option>{% endif %}
+        </select>
+        <button type="submit" class="btn">Kaydet</button>
+    </form>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.welcome-strip { background: linear-gradient(135deg, rgba(5, 107, 82, 0.08), rgba(6, 90, 114, 0.08)); border-radius: var(--radius); padding: 1.75rem 1.5rem; margin-bottom: 1.5rem; border: 2px solid rgba(5, 107, 82, 0.12); }
+.welcome-text { font-size: 1.5rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.35rem; }
+.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+.form-stack label { display: block; margin-top: 1rem; margin-bottom: 0.35rem; }
+.form-stack label:first-of-type { margin-top: 0; }
+.form-stack input, .form-stack select { width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 2px solid rgba(5, 107, 82, 0.15); }
+.form-stack .btn { margin-top: 1.25rem; width: 100%; }
+</style>
+{% endblock %}

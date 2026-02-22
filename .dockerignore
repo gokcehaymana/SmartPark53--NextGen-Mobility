@@ -1,0 +1,34 @@
+# Git ve ortam
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.venv
+venv
+env
+
+# IDE / Cursor
+.cursor
+.vscode
+*.md
+!README.md
+
+# Veritabanı (yerel)
+*.db
+smartpark53.db
+
+# Dokümantasyon ve scriptler (image'a gerek yok)
+docs/
+create_db.py
+check_db.py
+
+# Diğer
+.DS_Store
+Thumbs.db

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Ödeme{% endblock %}
+{% block content %}
+<section class="welcome-strip">
+    <p class="welcome-text">Ödeme</p>
+    <p class="welcome-sub">Plaka ve tutar girerek borcunuzu kapatabilirsiniz. (Demo: gerçek ödeme alınmaz.)</p>
+</section>
+<div class="card card-offset-right">
+    <h3>Ödeme bilgileri</h3>
+    <form method="post" action="{{ url_for('odeme') }}" class="form-stack">
+        <label for="plaka">Plaka</label>
+        <input type="text" id="plaka" name="plaka" value="{{ plaka_query or '' }}" placeholder="34 ABC 123" required autocomplete="off" maxlength="20">
+        <label for="tutar">Tutar (TL)</label>
+        <input type="number" id="tutar" name="tutar" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+        <button type="submit" class="btn">Ödeme yap</button>
+    </form>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.welcome-strip { background: linear-gradient(135deg, rgba(5, 107, 82, 0.08), rgba(6, 90, 114, 0.08)); border-radius: var(--radius); padding: 1.75rem 1.5rem; margin-bottom: 1.5rem; border: 2px solid rgba(5, 107, 82, 0.12); }
+.welcome-text { font-size: 1.5rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.35rem; }
+.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+.form-stack label { display: block; margin-top: 1rem; margin-bottom: 0.35rem; }
+.form-stack label:first-of-type { margin-top: 0; }
+.form-stack input { width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 2px solid rgba(5, 107, 82, 0.15); }
+.form-stack .btn { margin-top: 1.25rem; width: 100%; }
+</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Çıkış{% endblock %}
+{% block content %}
+<section class="welcome-strip">
+    <p class="welcome-text">Çıkış</p>
+    <p class="welcome-sub">Plakayı girin veya okuyun. Çıkış saati kaydedilir ve borç hesaplanır.</p>
+</section>
+<div class="card card-offset-right">
+    <h3>Plaka girin</h3>
+    <form method="post" action="{{ url_for('cikis') }}" class="form-stack">
+        <label for="plaka">Plaka</label>
+        <input type="text" id="plaka" name="plaka" placeholder="34 ABC 123" required autocomplete="off" maxlength="20">
+        <button type="submit" class="btn">Çıkış yap</button>
+    </form>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.welcome-strip { background: linear-gradient(135deg, rgba(5, 107, 82, 0.08), rgba(6, 90, 114, 0.08)); border-radius: var(--radius); padding: 1.75rem 1.5rem; margin-bottom: 1.5rem; border: 2px solid rgba(5, 107, 82, 0.12); }
+.welcome-text { font-size: 1.5rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.35rem; }
+.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+.form-stack label { display: block; margin-bottom: 0.35rem; }
+.form-stack input { width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 2px solid rgba(5, 107, 82, 0.15); }
+.form-stack .btn { margin-top: 1.25rem; width: 100%; }
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+# SmartPark53 - Tüm proje Docker'da çalışır (sunucuya taşınmaya hazır)
+# Kullanım: docker-compose up -d   →  http://localhost:5000
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smartpark53-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: smartpark53
+    ports:
+      - "5432:5432"
+    volumes:
+      - smartpark53_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d smartpark53"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: smartpark53-web
+    environment:
+      DATABASE_URL: postgresql://admin:password@postgres:5432/smartpark53
+      SECRET_KEY: ${SECRET_KEY:-smartpark53-docker-key}
+      FLASK_DEBUG: "0"
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  smartpark53_pgdata:

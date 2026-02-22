@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Borç sonucu{% endblock %}
+{% block content %}
+<section class="welcome-strip">
+    <p class="welcome-text">Borç sorgulama sonucu</p>
+    <p class="welcome-sub">Plaka: <strong>{{ plaka }}</strong></p>
+</section>
+<div class="card card-offset-left">
+    {% if kayit %}
+    <div class="result-rows">
+        <div class="result-row"><span>Giriş</span><strong>{{ kayit.giris[:19] if kayit.giris else '-' }}</strong></div>
+        <div class="result-row"><span>Hesaplanan borç (TL)</span><strong>{{ "%.2f"|format(kayit.get('borc', 0) + kayit.get('odenen_tutar', 0)) }}</strong></div>
+        <div class="result-row"><span>Ödenen (TL)</span><strong>{{ "%.2f"|format(kayit.get('odenen_tutar', 0)) }}</strong></div>
+        <div class="result-row highlight"><span>Kalan borç (TL)</span><strong>{{ "%.2f"|format(kayit.get('borc', 0)) }}</strong></div>
+    </div>
+    {% else %}
+    <p class="result-empty">Bu plakaya ait kayıt bulunamadı.</p>
+    {% endif %}
+    <a href="{{ url_for('borc') }}" class="btn btn-inline" style="margin-top: 1.25rem;">Yeni sorgulama</a>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.welcome-strip { background: linear-gradient(135deg, rgba(5, 107, 82, 0.08), rgba(6, 90, 114, 0.08)); border-radius: var(--radius); padding: 1.75rem 1.5rem; margin-bottom: 1.5rem; border: 2px solid rgba(5, 107, 82, 0.12); }
+.welcome-text { font-size: 1.5rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.35rem; }
+.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+.result-rows { display: flex; flex-direction: column; gap: 0.75rem; }
+.result-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--surface-soft); border-radius: var(--radius-sm); }
+.result-row span { color: var(--text-muted); }
+.result-row.highlight { background: rgba(5, 107, 82, 0.1); border: 2px solid rgba(5, 107, 82, 0.2); }
+.result-row.highlight strong { color: var(--rize-green-dark); }
+.result-empty { color: var(--text-muted); margin: 0; }
+</style>
+{% endblock %}

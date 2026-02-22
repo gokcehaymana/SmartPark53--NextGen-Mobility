@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Harita & Doluluk{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+.harita-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.harita-title { font-size: 1.35rem; font-weight: 800; color: var(--rize-green-dark); margin: 0; }
+.ilce-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 2px solid rgba(5, 107, 82, 0.12);
+}
+.ilce-form label { margin: 0; margin-right: 0.25rem; }
+.ilce-form select { width: auto; min-width: 160px; margin: 0; }
+.ilce-form .btn { width: auto; padding: 0.75rem 1.25rem; }
+.legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 0.75rem; }
+.legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+.legend-green { background: var(--rize-green); }
+.legend-yellow { background: var(--gold); }
+.legend-red { background: var(--danger); }
+#map {
+    height: 320px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-strong);
+    border: 2px solid rgba(5, 107, 82, 0.1);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.list-section { margin-top: 1.5rem; }
+.list-section h3 { margin-bottom: 1rem; }
+.park-list-item {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 2px solid rgba(5, 107, 82, 0.08);
+    box-shadow: 0 4px 16px rgba(5, 107, 82, 0.06);
+    transition: box-shadow 0.2s ease;
+}
+.park-list-item:hover { box-shadow: var(--shadow); }
+.park-list-item strong { color: var(--rize-green-dark); font-size: 1.05rem; }
+.ilce-tag { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+.park-addr { color: var(--text-muted); font-size: 0.9rem; display: block; margin: 0.35rem 0 0.5rem; }
+.park-stat { font-weight: 700; color: var(--rize-green); }
+.card-offset-left { }
+</style>
+{% endblock %}
+{% block content %}
+<div class="harita-header">
+    <div>
+        <h2 class="harita-title">Rize otoparkları</h2>
+        <div class="legend">
+            <span><i class="legend-dot legend-green"></i> Bol yer</span>
+            <span><i class="legend-dot legend-yellow"></i> Az yer</span>
+            <span><i class="legend-dot legend-red"></i> Dolu</span>
+        </div>
+    </div>
+    <form method="get" action="{{ url_for('harita') }}" class="ilce-form">
+        <label for="ilce">İlçe</label>
+        <select id="ilce" name="ilce">
+            <option value="">Tümü</option>
+            {% for i in (ilceler or []) %}
+            <option value="{{ i }}" {{ 'selected' if (secilen_ilce or '') == i else '' }}>{{ i }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Göster</button>
+    </form>
+</div>
+
+<div id="map"></div>
+
+<div class="card card-offset-left list-section">
+    <h3>{% if secilen_ilce %}{{ secilen_ilce }} — {% endif %}Otopark listesi</h3>
+    {% if not park_alanlari %}
+    <p style="color: var(--text-muted);">Bu ilçede kayıtlı otopark yok.</p>
+    {% endif %}
+    {% for pid, p in park_alanlari.items() %}
+    <div class="park-list-item">
+        <strong>{{ p.ad }}</strong> <span class="ilce-tag">({{ p.get('ilce', '') }})</span>
+        <span class="park-addr">{{ p.adres }}</span>
+        <span class="park-stat">{{ p.dolu }} / {{ p.kapasite }}</span> —
+        {% set yuzde = ((p.dolu / p.kapasite * 100)|int) if p.kapasite else 0 %}
+        {% if yuzde < 50 %}Bol yer{% elif yuzde < 90 %}Az yer{% else %}Dolu{% endif %}
+    </div>
+    {% endfor %}
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+(function(){
+    var alanlar = {{ park_alanlari | tojson }};
+    var center = [41.023, 40.517];
+    var zoom = 14;
+    if (Object.keys(alanlar).length === 1) {
+        var only = alanlar[Object.keys(alanlar)[0]];
+        center = [only.enlem, only.boylam];
+        zoom = 16;
+    } else if (Object.keys(alanlar).length > 1) {
+        var lats = [], lngs = [];
+        Object.keys(alanlar).forEach(function(id){ var p = alanlar[id]; lats.push(p.enlem); lngs.push(p.boylam); });
+        center = [(Math.min.apply(null,lats)+Math.max.apply(null,lats))/2, (Math.min.apply(null,lngs)+Math.max.apply(null,lngs))/2];
+    }
+    var map = L.map('map').setView(center, zoom);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(map);
+    Object.keys(alanlar).forEach(function(id){
+        var p = alanlar[id];
+        var yuzde = p.kapasite ? (p.dolu / p.kapasite * 100) : 0;
+        var renk = yuzde < 50 ? '#056b52' : yuzde < 90 ? '#c9a227' : '#c54a4a';
+        L.circleMarker([p.enlem, p.boylam], { radius: 11, fillColor: renk, color: '#fff', weight: 2, fillOpacity: 0.95 })
+            .addTo(map).bindPopup('<b>' + p.ad + '</b><br><small>' + (p.ilce || '') + '</small><br>' + p.dolu + '/' + p.kapasite);
+    });
+})();
+</script>
+{% endblock %}
