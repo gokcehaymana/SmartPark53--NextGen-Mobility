@@ -21,7 +21,7 @@
             --rize-sea-dark: #043d4d;
             --rize-tea: #1a8f6e;
             --gold: #c9a227;
-            --bg: #f2f8f5;
+            --bg: #effbf5;
             --surface: #ffffff;
             --surface-soft: #e8f5f0;
             --text: #0d281c;
@@ -37,8 +37,8 @@
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             background:
-                radial-gradient(circle at 0% 0%, rgba(5, 107, 82, 0.12) 0%, transparent 55%),
-                radial-gradient(circle at 100% 100%, rgba(6, 90, 114, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 0% 0%, rgba(5, 107, 82, 0.16) 0%, transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(6, 90, 114, 0.16) 0%, transparent 55%),
                 var(--bg);
             color: var(--text);
             margin: 0;
@@ -51,7 +51,14 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% -10%, rgba(255,255,255,0.8) 0%, transparent 60%);
+            background-image:
+                radial-gradient(circle at 18% 22%, rgba(5, 107, 82, 0.22) 0%, transparent 58%),
+                radial-gradient(circle at 82% 72%, rgba(6, 90, 114, 0.22) 0%, transparent 58%),
+                radial-gradient(circle at 52% 95%, rgba(201, 162, 39, 0.14) 0%, transparent 60%),
+                radial-gradient(circle at 50% -10%, rgba(255,255,255,0.85) 0%, transparent 60%);
+            background-size: 140% 140%;
+            background-position: 0% 0%;
+            animation: bgShift 16s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
         }
@@ -63,8 +70,13 @@
             pointer-events: none;
             z-index: 0;
         }
+        @keyframes bgShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
         .hero {
-            background: linear-gradient(135deg, var(--rize-green-dark) 0%, var(--rize-green) 35%, var(--rize-sea) 80%);
+            background: linear-gradient(135deg, var(--rize-green-dark) 0%, var(--rize-green-light) 30%, var(--rize-sea) 70%, var(--rize-sea-dark) 100%);
             padding: 2.6rem 1.5rem 3.2rem;
             text-align: center;
             position: relative;
@@ -273,7 +285,7 @@
             padding: 2.25rem 1rem;
             color: var(--text-muted);
             font-size: 0.85rem;
-            background: linear-gradient(180deg, transparent 0%, rgba(5, 107, 82, 0.04) 30%, rgba(6, 90, 114, 0.06) 100%);
+            background: linear-gradient(180deg, transparent 0%, rgba(5, 107, 82, 0.06) 30%, rgba(6, 90, 114, 0.08) 100%);
             border-radius: 36px 36px 0 0;
             margin-top: 2rem;
             border-top: 1px solid rgba(5, 107, 82, 0.08);
@@ -296,7 +308,6 @@
         <a href="{{ url_for('index') }}" class="hero-inner">
             <h1>SmartPark53</h1>
             <span class="tagline">Rize Belediyesi · Akıllı park yönetimi</span>
-            <span class="badge">Çay &amp; deniz kenti</span>
         </a>
     </header>
     <nav class="nav-bar">
@@ -317,7 +328,7 @@
         {% endwith %}
         {% block content %}{% endblock %}
     </main>
-    <footer>SmartPark53 — Rize Belediyesi · Uygulama indirmenize gerek yok.</footer>
+    <footer>SmartPark53 — Rize Belediyesi</footer>
     {% block script %}{% endblock %}
 </body>
 </html>
