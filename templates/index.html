@@ -1,165 +1,50 @@
 {% extends "base.html" %}
-{% block title %}Ana Sayfa{% endblock %}
+{% block title %}Giriş{% endblock %}
 {% block content %}
-<section class="welcome-strip">
-    <span class="welcome-icon" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4L8 14v20l16 10 16-10V14L24 4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="rgba(5,107,82,0.08)"/><path d="M24 24v14M8 14l16 10 16-10M8 34l16-10 16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </span>
-    <p class="welcome-text">Rize'de akıllı park</p>
-    <p class="welcome-sub">Plaka kaydı, borç sorgulama ve ödeme tek ekranda. Uygulama gerekmez.</p>
+<section class="welcome-hero">
+    <h1 class="welcome-hero-title">SmartPark53'e Hoş Geldiniz</h1>
+    <p class="welcome-hero-sub">
+        Rize Belediyesi akıllı otopark sistemine giriş yaptınız.
+    </p>
+    <p class="welcome-hero-note">
+        İşlemlerinize yukarıdaki menüden devam edebilirsiniz.
+    </p>
 </section>
-
-<div class="action-grid">
-    <a href="{{ url_for('plaka') }}" class="action-tile action-primary">
-        <span class="action-icon action-icon-car" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14v-5H5v5z"/><path d="M5 12V9l3-4h8l3 4v3"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>
-        </span>
-        <span class="action-label">Plaka kaydet</span>
-    </a>
-    <a href="{{ url_for('borc') }}" class="action-tile action-borc">
-        <span class="action-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-        </span>
-        <span class="action-label">Borç sorgula</span>
-    </a>
-    <a href="{{ url_for('odeme') }}" class="action-tile action-odeme">
-        <span class="action-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
-        </span>
-        <span class="action-label">Ödeme yap</span>
-    </a>
-    <a href="{{ url_for('harita') }}" class="action-tile action-harita">
-        <span class="action-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </span>
-        <span class="action-label">Harita</span>
-    </a>
-</div>
-
-<div class="card card-offset-right park-summary-card">
-    <h3><span class="card-title-icon">🅿</span> Otoparklar</h3>
-    {% if park_alanlari %}
-    <ul class="park-list">
-        {% for pid, p in park_alanlari.items() %}
-        <li class="park-item">
-            <span class="park-name">{{ p.ad }} <em>({{ p.get('ilce', '') }})</em></span>
-            <span class="park-cap">{{ p.dolu }} / {{ p.kapasite }}</span>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p class="park-empty">Henüz otopark kaydı yok.</p>
-    {% endif %}
-</div>
 {% endblock %}
 {% block head %}
 <style>
-.welcome-strip {
-    background: linear-gradient(135deg, rgba(5, 107, 82, 0.12) 0%, rgba(6, 90, 114, 0.1) 50%, rgba(201, 162, 39, 0.06) 100%);
+.welcome-hero {
+    background: #ffffff;
     border-radius: var(--radius);
-    padding: 2rem 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 2px solid rgba(5, 107, 82, 0.18);
-    position: relative;
-    overflow: hidden;
+    padding: 2.25rem 1.75rem;
+    text-align: center;
+    border: 1px solid rgba(5, 107, 82, 0.14);
+    box-shadow: 0 10px 30px rgba(5, 107, 82, 0.12);
 }
-.welcome-strip::before {
-    content: '';
-    position: absolute;
-    top: -50%; right: -20%;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(5, 107, 82, 0.08) 0%, transparent 70%);
+.welcome-hero-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--rize-green-dark);
 }
-.welcome-icon {
-    display: inline-block;
-    width: 48px; height: 48px;
-    margin-bottom: 0.75rem;
-    color: var(--rize-green);
+.welcome-hero-sub {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    color: var(--text-muted);
 }
-.welcome-icon svg { width: 100%; height: 100%; }
-.welcome-text { font-size: 1.6rem; font-weight: 800; color: var(--rize-green-dark); margin: 0 0 0.4rem; letter-spacing: -0.02em; }
-.welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
-.action-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.welcome-hero-note {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
-.action-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 110px;
-    padding: 1.35rem;
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--text);
-    box-shadow: var(--shadow);
-    border: 2px solid transparent;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
-    position: relative;
-    overflow: hidden;
+@media (max-width: 640px) {
+    .welcome-hero {
+        padding: 2rem 1.4rem;
+    }
+    .welcome-hero-title {
+        font-size: 1.7rem;
+    }
 }
-.action-tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-.action-tile:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: var(--shadow-strong);
-}
-.action-primary {
-    background: linear-gradient(145deg, var(--rize-green) 0%, var(--rize-tea) 50%, var(--rize-sea) 100%);
-    color: #fff;
-    grid-column: span 2;
-    min-height: 88px;
-    flex-direction: row;
-    gap: 1.25rem;
-    box-shadow: 0 10px 36px rgba(5, 107, 82, 0.35);
-}
-.action-primary:hover { color: #fff; box-shadow: 0 14px 44px rgba(5, 107, 82, 0.4); }
-.action-primary .action-icon { background: rgba(255,255,255,0.28); color: #fff; }
-.action-borc { background: linear-gradient(145deg, #fff 0%, #e8f5f0 100%); border-color: rgba(5, 107, 82, 0.15); }
-.action-borc .action-icon { background: rgba(5, 107, 82, 0.12); color: var(--rize-green); }
-.action-borc:hover { border-color: var(--rize-green); }
-.action-odeme { background: linear-gradient(145deg, #fff 0%, #f0f5f8 100%); border-color: rgba(6, 90, 114, 0.15); }
-.action-odeme .action-icon { background: rgba(6, 90, 114, 0.12); color: var(--rize-sea); }
-.action-odeme:hover { border-color: var(--rize-sea); }
-.action-harita { background: linear-gradient(145deg, #fff 0%, #f5f8e8 100%); border-color: rgba(201, 162, 39, 0.2); }
-.action-harita .action-icon { background: rgba(201, 162, 39, 0.15); color: var(--gold); }
-.action-harita:hover { border-color: var(--gold); }
-.action-icon {
-    width: 48px; height: 48px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-.action-icon svg { width: 26px; height: 26px; }
-.action-label { font-weight: 700; font-size: 1.02rem; }
-.park-summary-card { background: linear-gradient(180deg, var(--surface-soft) 0%, #e0f0e8 100%); border: 2px solid rgba(5, 107, 82, 0.15); }
-.park-summary-card .card-title-icon { font-size: 1.2rem; }
-.park-list { list-style: none; padding: 0; margin: 0; }
-.park-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.85rem 1rem;
-    margin: 0 -1rem;
-    border-radius: var(--radius-sm);
-    transition: background 0.2s ease;
-}
-.park-item:nth-child(odd) { background: rgba(255,255,255,0.6); }
-.park-item:hover { background: rgba(5, 107, 82, 0.06); }
-.park-name { font-weight: 500; }
-.park-name em { font-style: normal; color: var(--text-muted); font-size: 0.85rem; }
-.park-cap { font-weight: 700; color: var(--rize-green); font-size: 1.08rem; }
-.park-empty { color: var(--text-muted); margin: 0; }
 </style>
 {% endblock %}

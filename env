@@ -1,0 +1,9 @@
+# SmartPark53 - Ortam değişkenleri (git'e eklenmez)
+# Sadece aşağıdaki şifreyi kendi PostgreSQL şifrenizle değiştirin.
+
+SECRET_KEY=smartpark53-dev-key
+FLASK_DEBUG=1
+
+# PostgreSQL — Docker kullanıyorsanız aşağıdaki satırı kullanın (admin/password).
+# Yerel kurulumda postgres kullanıcısı varsa: postgres:SIFRENIZ
+DATABASE_URL=postgresql://admin:password@localhost:5432/smartpark53
