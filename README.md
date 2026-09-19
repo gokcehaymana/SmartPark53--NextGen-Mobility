@@ -1,5 +1,12 @@
 # SmartPark53: NextGen Mobility
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+</p>
+
 **Akıllı Algılama Teknolojisiyle Yeni Nesil Parkomat Platformu**
 
 Rize Belediyesi için geliştirilen SmartPark53, belediye park alanlarının yapay zekâ destekli otonom yönetimini hedefleyen, mobil öncelikli web tabanlı bir platformdur. Harita ve örnek otoparklar Rize merkez koordinatlarına göre tanımlıdır.
